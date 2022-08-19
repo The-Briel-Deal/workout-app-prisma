@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
@@ -16,6 +15,13 @@ app.use(
   "/user",
   trpcExpress.createExpressMiddleware({
     router: user,
+    createContext,
+  })
+);
+app.use(
+  "/workout",
+  trpcExpress.createExpressMiddleware({
+    router: workout,
     createContext,
   })
 );
