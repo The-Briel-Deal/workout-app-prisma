@@ -6,6 +6,7 @@ import express from "express";
 import user from "./routes/user";
 import workout from "./routes/workout";
 import workoutSet from "./routes/set";
+import excercise from "./routes/excercise";
 const app = express();
 const createContext = ({
   req,
@@ -30,6 +31,13 @@ app.use(
   "/set",
   trpcExpress.createExpressMiddleware({
     router: workoutSet,
+    createContext,
+  })
+);
+app.use(
+  "/excercise",
+  trpcExpress.createExpressMiddleware({
+    router: excercise,
     createContext,
   })
 );
