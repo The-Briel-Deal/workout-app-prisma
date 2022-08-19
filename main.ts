@@ -3,10 +3,10 @@ import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
 
+// Routes
 import user from "./routes/user";
-
+import workout from "./routes/workout";
 const app = express();
-// created for each request
 const createContext = ({
   req,
   res,
