@@ -5,6 +5,7 @@ import express from "express";
 // Routes
 import user from "./routes/user";
 import workout from "./routes/workout";
+import workoutSet from "./routes/set";
 const app = express();
 const createContext = ({
   req,
@@ -22,6 +23,13 @@ app.use(
   "/workout",
   trpcExpress.createExpressMiddleware({
     router: workout,
+    createContext,
+  })
+);
+app.use(
+  "/set",
+  trpcExpress.createExpressMiddleware({
+    router: workoutSet,
     createContext,
   })
 );
