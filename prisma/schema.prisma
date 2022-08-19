@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Excercise {
+  id         String   @id(map: "EXCERCISE_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String
+  intensity  Int      @db.SmallInt
+  Set        Set[]
+}
+
+model Set {
+  id           String    @id(map: "SET_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  excercise_id String    @db.Uuid
+  workout_id   String    @db.Uuid
+  reps         Int       @db.SmallInt
+  weight_lb    Float?    @db.Real
+  Exercise     Excercise @relation(fields: [excercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Workout      Workout   @relation(fields: [workout_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id         String    @id(map: "USER_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  email      String
+  password   String
+  name       String
+  Workout    Workout[]
+}
+
+model Workout {
+  id         String   @id(map: "WORKOUT_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  user_id    String   @db.Uuid
+  name       String
+  User       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Set        Set[]
+}
