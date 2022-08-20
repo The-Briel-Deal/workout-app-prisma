@@ -1,6 +1,7 @@
 import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
+import cors from "cors";
 
 // Routes
 import user from "./routes/user";
@@ -13,31 +14,19 @@ const createContext = ({
   res,
 }: trpcExpress.CreateExpressContextOptions) => ({}); // no context
 type Context = trpc.inferAsyncReturnType<typeof createContext>;
+
+const appRouter = trpc
+  .router()
+  .merge("user.", user)
+  .merge("workout.", workout)
+  .merge("set.", workoutSet)
+  .merge("excercise.", excercise);
+export type AppRouter = typeof appRouter;
+app.use(cors());
 app.use(
-  "/user",
+  "/trpc",
   trpcExpress.createExpressMiddleware({
-    router: user,
-    createContext,
-  })
-);
-app.use(
-  "/workout",
-  trpcExpress.createExpressMiddleware({
-    router: workout,
-    createContext,
-  })
-);
-app.use(
-  "/set",
-  trpcExpress.createExpressMiddleware({
-    router: workoutSet,
-    createContext,
-  })
-);
-app.use(
-  "/excercise",
-  trpcExpress.createExpressMiddleware({
-    router: excercise,
+    router: appRouter,
     createContext,
   })
 );
