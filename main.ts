@@ -41,5 +41,6 @@ app.use(
     createContext,
   })
 );
-console.log("listening on localhost:4000");
-app.listen(4000);
+const port = process.env.PORT || 4000;
+console.log(`listening on localhost:${port}`);
+app.listen(port);
