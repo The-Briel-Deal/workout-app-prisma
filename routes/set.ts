@@ -8,7 +8,13 @@ const workoutSet = trpc
     async resolve(req) {
       const sets = await db.set.findMany({
         where: { workout_id: req.input },
-        select: { id: true, created_at: true, reps: true, weight_lb: true },
+        select: {
+          id: true,
+          created_at: true,
+          reps: true,
+          weight_lb: true,
+          Exercise: { select: { id: true, name: true } },
+        },
       });
       return sets;
     },

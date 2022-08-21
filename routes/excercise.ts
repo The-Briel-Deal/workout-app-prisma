@@ -4,16 +4,14 @@ import db from "../prisma/db";
 
 const excercise = trpc
   .router()
-  // .query("getAll", {
-  //   input: z.string({ description: "Workout ID" }),
-  //   async resolve(req) {
-  //     const sets = await db.set.findMany({
-  //       where: { workout_id: req.input },
-  //       select: { id: true, created_at: true, reps: true, weight_lb: true },
-  //     });
-  //     return sets;
-  //   },
-  // });
+  .query("getAll", {
+    async resolve(req) {
+      const excercises = await db.excercise.findMany({
+        select: { id: true, created_at: true, name: true, intensity: true },
+      });
+      return excercises;
+    },
+  })
   .mutation("create", {
     input: z.object({
       name: z.string().min(1),
