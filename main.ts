@@ -8,6 +8,7 @@ import user from "./routes/user";
 import workout from "./routes/workout";
 import workoutSet from "./routes/set";
 import excercise from "./routes/excercise";
+import path from "path";
 const app = express();
 const createContext = ({
   req,
@@ -23,6 +24,8 @@ const appRouter = trpc
   .merge("excercise.", excercise);
 export type AppRouter = typeof appRouter;
 app.use(cors());
+app.use("/", express.static(path.join(__dirname, "dist")));
+app.use("/workouts", express.static(path.join(__dirname, "dist")));
 app.use(
   "/trpc",
   trpcExpress.createExpressMiddleware({
