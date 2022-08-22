@@ -14,7 +14,7 @@ const workout = trpc
       console.log(req);
       const workout = await db.workout.findMany({
         where: { user_id: req.input.userId },
-        select: { id: true, name: true },
+        select: { id: true, name: true, created_at: true },
         orderBy: { created_at: "desc" },
         skip: (req.input.page || 0) * (req.input.limit || 10),
         take: req.input.limit || 10,
